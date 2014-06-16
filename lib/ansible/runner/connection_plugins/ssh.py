@@ -204,7 +204,9 @@ class Connection(object):
         return (p.returncode, stdout, stderr)
 
     def not_in_host_file(self, host):
-        if 'USER' in os.environ:
+        if 'ANSIBLE_SSH_KNOWN_HOSTS' in os.environ:
+            user_host_file = os.path.expandvars("${ANSIBLE_SSH_KNOWN_HOSTS}")
+        elif 'USER' in os.environ:
             user_host_file = os.path.expandvars("~${USER}/.ssh/known_hosts")
         else:
             user_host_file = "~/.ssh/known_hosts"

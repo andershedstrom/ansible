@@ -145,7 +145,10 @@ class Connection(object):
 
         ssh = paramiko.SSHClient()
      
-        self.keyfile = os.path.expanduser("~/.ssh/known_hosts")
+        if 'ANSIBLE_SSH_KNOWN_HOSTS' in os.environ:
+            self.keyfile = os.path.expandvars("${ANSIBLE_SSH_KNOWN_HOSTS}")
+        else:
+            self.keyfile = os.path.expanduser("~/.ssh/known_hosts")
 
         if C.HOST_KEY_CHECKING:
             ssh.load_system_host_keys()
